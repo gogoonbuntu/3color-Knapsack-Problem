@@ -16,12 +16,20 @@ int randomGenerate(int itemNum);
 void printArray(int a[]);
 char* DP(int itemNum);
 char* BB(int itemNum);
+char* GR(int itemNum);
 void quickSort(float *base, int n);
+
+typedef struct{
+	int benefitTotal;
+	int weightTotal;
+	float bound;
+} node;
 
 int main(void){
 	randomGenerate(10);
 	DP(10);
 	BB(10);
+	GR(10);
 }
 
 
@@ -85,11 +93,13 @@ char* BB(int itemNum){
 	int Bmax = 0;
 
 	float* benefitOverWeight = malloc(sizeof(float) * itemNum);
+
 	for(int i=1; i<=itemNum; i++){
 		benefitOverWeight[i] = (float)benefit[i]/weight[i];
 	}
 	quickSort(benefitOverWeight, itemNum);
 	
+	node* 
 
 	clock_t end_BB = clock();
 	float time_BB = end_BB - start_BB;
@@ -101,14 +111,28 @@ char* BB(int itemNum){
 
 char* GR(int itemNum){
 	clock_t start_GR = clock();
-	
-	int Bmax = 0;
 
+	float* benefitOverWeight = malloc(sizeof(float) * itemNum);
+	for(int i=1; i<=itemNum; i++){
+		benefitOverWeight[i] = (float)benefit[i]/weight[i];
+	}
+	quickSort(benefitOverWeight, itemNum);
+
+	int capacityLeft = Capacity;
+	float Bmax = 0;
+	int i = 0;
+	while(weight[i]<=capacityLeft){
+		Bmax += benefit[i];
+		capacityLeft -= weight[i];
+		i++;
+	}
+
+	Bmax += (float)capacityLeft/weight[i] * benefitOverWeight[i];
 
 	clock_t end_GR = clock();
 	float time_GR = end_GR - start_GR;
 	answer_GR[0] = '\0';
-	sprintf(answer_GR, "%d / %.3f", Bmax, time_GR);
+	sprintf(answer_GR, "%.3f / %.3f", Bmax, time_GR);
 	printf("answer_GR = %s\n", answer_GR);
 	return answer_GR;
 }
