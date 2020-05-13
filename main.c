@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 int weight[10000] = {0, };
 int benefit[10000] = {0, };
@@ -12,9 +13,7 @@ void printArray(int a[]);
 char* DP(int itemNum);
 
 int main(void){
-	randomGenerate(10);
-	printArray(weight);
-	printArray(benefit);
+	
 	DP(10);
 	
 }
@@ -23,6 +22,8 @@ int main(void){
 int randomGenerate(int itemNum){
 
 	srand((unsigned int)time(NULL));
+	memset(weight, 0, sizeof(weight));
+	memset(benefit, 0, sizeof(benefit));
 
 	for(int i=1; i<=itemNum; i++){
 		weight[i] = rand()%99+1;
@@ -35,6 +36,8 @@ int randomGenerate(int itemNum){
 }
 
 char* DP(int itemNum) {
+	randomGenerate(itemNum);
+
 	clock_t start_DP = clock();
 
 	//동적배열 생성
